@@ -12,6 +12,9 @@ conn = engine.connect()
 def index():
     return render_template('index.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 # remember how to take user inputs?
 @app.route('/user/<name>')
@@ -22,11 +25,15 @@ def user(name):
 # get all boats
 # this is done to handle requests for two routes -
 @app.route('/boats/')
-@app.route('/boats/<page>')
+@app.route('/boats/<page>', methods=['POST'])
 def get_boats(page=1):
     page = int(page)  # request params always come as strings. So type conversion is necessary.
     per_page = 10  # records to show per page
-    boats = conn.execute(text(f"SELECT * FROM boats LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
+    search = request.form.get('search', None)  # get the search value from the form
+    if search:
+        boats = conn.execute(text(f"SELECT * FROM boats WHERE name LIKE '%{search}%' LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
+    else:
+        boats = conn.execute(text(f"SELECT * FROM boats LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
     print(boats)
     return render_template('boats.html', boats=boats, page=page, per_page=per_page)
 

@@ -3,22 +3,47 @@
 }
 
 .logo {
-  width: 45px;
+  width: 65px;
 }
-
-header li {
+header .topLeft {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+header ul {
+  background-color: #e6fdff;
+  width: fit-content;
+  margin: 0;
+  padding: 10px;
+  border-radius: 5px;}
+header .topLeft li {
   float: left;
+  position: sticky; 
   display: block;
-  padding-left: 8px;
-  padding-right: 8px;
+  margin-left: 8px;
+  margin-right: 8px;
+  border-radius: 3px;
+  border: 1px solid white;
+  padding: 5px 5px;
+  font-size: 14px;
+  color: white;
+  background: rgb(220,0,204);
+  background: linear-gradient(90deg, rgba(220, 0, 205, 0.345) 0%, rgba(0,212,255,1) 100%);
+  &:hover{
+    cursor:pointer;
+    scale:1.05;
+    transition: all 0.5s ease-in-out;
+  }
 }
 
 .topBar{
-  background-color: #faf9f7;
+  background-image:linear-gradient(rgb(116, 177, 177) 0%,#D6D6FF 40%,#3f48cc 55%);
   display:flex;
   justify-content: space-between;
   align-items:center;
   padding: 10px;
+  border-bottom: 5px solid #ab3387;
 }
 
 .formSection {
@@ -32,20 +57,17 @@ header li {
   border-radius: 5px;
   margin-left: 10px;
 }
+header a{
+  text-decoration:none;
+  color: black;
+}
+header .topLeft a{
+  color:white;
+}
 
 .mainDiv {
   margin: auto;
-  width: 30%;
-
-}
-
-h1{
-  text-align: center;
-}
-
-header a{
-  text-decoration:none;
-  color:black;
+  width: 100%;
 }
 
 /* FOOTER */

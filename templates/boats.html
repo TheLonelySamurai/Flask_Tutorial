@@ -45,7 +45,10 @@
     {% set prev_page = page - 1 %}  <!-- variables in jinja --->
     <div class="column">
         <h3>Page {{ page }}</h3>
-
+        <form action="/boats/1" method="POST">
+            <input type="text" name="search" placeholder="Search anything" class="input_field"> <br>
+            <input type="submit" value="Submit" class="input_submit">
+        </form>
         <div class="flex-box">
             {% for boat in boats %}
                 <div class="boat">

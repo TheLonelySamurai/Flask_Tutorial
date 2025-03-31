@@ -3,17 +3,20 @@
   <head>
     <meta charset="utf-8">
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/header.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Pre:wght@400..700&family=Faculty+Glyphic&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Major+Mono+Display&family=Quicksand:wght@300..700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
     <title>My site</title>
   </head>
 
   <body>
     <header>
       <div class="topBar">
-        <div class="">
-          <img src="{{url_for('static',filename = 'images/logo.jpg')}}" alt="Logo" class="logo">
+        <div class="topLeft">
+          <img src="{{url_for('static',filename = 'images/logo.png')}}" alt="Logo" class="logo">
           <ul class="barItem">
-
             <li><a href="/">HOME</a></li>
+            <li><a href="/about">ABOUT</a></li>
             <li><a href="/boats">BOATS</a></li>
             <li><a href="/create">CREATE BOATS</a></li>
             <li><a href="/delete">DELETE BOATS</a></li>
@@ -34,13 +37,12 @@
 
       </div>
     </header>
-
+    <div class="mainDiv">
     {% block body %}
     {% endblock %}
-    
+    </div>
     <footer class="footer">
       <div class="footer__addr">
-        <h1 class="footer__logo">A very cool looking footer!</h1>
 
         <h2>Contact</h2>
 
@@ -127,6 +129,6 @@
         </div>
       </div>
     </footer>
-
+  <script src="smoooth-anchor.js"></script>
   </body>
 </html>
