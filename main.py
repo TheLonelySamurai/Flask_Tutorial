@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 # initialize database
 # connection string is in the format mysql://user:password@server/database
-conn_str = "mysql://root:iit123@localhost/boatdb"
+conn_str = "mysql://root:74CLpyrola!@localhost/boatdb"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -28,7 +28,6 @@ def get_boats():
     # local_session = Session(bind=engine)
     # boats = local_session.query(BoatsModel).all()  # returns all boats
     boats = conn.execute(text("select * from boats")).all()
-    print(boats)
     return render_template('boats.html', boats=boats[:10])
 
 
