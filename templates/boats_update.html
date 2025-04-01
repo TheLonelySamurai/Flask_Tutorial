@@ -42,11 +42,15 @@
         {% if success %}
             <h2>{{ success }}</h2>
         {% endif %}
-        <h3> Delete a boat </h3>
-        <h4> Fill in the ID of the boat you want to delete: </h4>
-        <form action="/delete" method="POST">
-            
+        <h2> Update an existing boat </h2>
+        <form action="/update" method="POST">
+            <h4> Fill in the ID of the boat you want to update: </h4>
             <input type="number" name="id" placeholder="ID" class="input_field"> <br>
+            <h4> Fill in the new details: </h4>
+            <input type="text" name="name" placeholder="Boat name" class="input_field"> <br>
+            <input type="text" name="type" placeholder="Boat type" class="input_field"> <br>
+            <input type="number" name="owner_id" placeholder="Owner ID" class="input_field"> <br>
+            <input type="number" name="rental_price" placeholder="Rental price" class="input_field" step="0.01"> <br>
             <input type="submit" value="Submit" class="input_submit" onclick="validateForm()">
         </form>
         <script>
@@ -56,7 +60,7 @@
                     alert("Please enter a boat ID.");
                     event.preventDefault(); // Prevent form submission
                     return false;
-                } 
+                } s
             }
         </script>
     </div>

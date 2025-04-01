@@ -12,10 +12,6 @@ conn = engine.connect()
 def index():
     return render_template('index.html')
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
 # remember how to take user inputs?
 @app.route('/user/<name>')
 def user(name):
@@ -33,9 +29,9 @@ def get_boats(page=1):
         page = 1
     search = request.form.get('search', None)  # get the search value from the form
     if search:
-        boats = conn.execute(text(f"SELECT * FROM boats WHERE name LIKE '%{search}%' LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
+        boats = conn.execute(text(f"SELECT * FROM boats WHERE name LIKE '%{search}%' ORDER BY id LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
     else:
-        boats = conn.execute(text(f"SELECT * FROM boats LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
+        boats = conn.execute(text(f"SELECT * FROM boats ORDER BY id LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
     print(boats)
     return render_template('boats.html', boats=boats, page=page, per_page=per_page, search=search)
 @app.route('/boats/<page>/<search>')
@@ -47,9 +43,9 @@ def get_boats_search_with_page(page=1, search=None):
         search = None
     per_page = 12  # records to show per page
     if search:
-        boats = conn.execute(text(f"SELECT * FROM boats WHERE name LIKE '%{search}%' LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
+        boats = conn.execute(text(f"SELECT * FROM boats WHERE name LIKE '%{search}%' ORDER BY id LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
     else:
-        boats = conn.execute(text(f"SELECT * FROM boats LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
+        boats = conn.execute(text(f"SELECT * FROM boats ORDER BY id LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
     print(boats)
     return render_template('boats.html', boats=boats, page=page, per_page=per_page, search=search)
 @app.route('/boat/<id>', methods=['GET'])
@@ -69,7 +65,7 @@ def create_boat():
     # ex: print(request.form['id'])
     try:
         conn.execute(
-            text("INSERT INTO boats values (:id, :name, :type, :owner_id, :rental_price)"),
+            text("INSERT INTO boats (id, name, type, owner_id, rental_price) values (:id, :name, :type, :owner_id, :rental_price)"),
             request.form
         )
         return render_template('boats_create.html', error=None, success="Data inserted successfully!")
@@ -77,7 +73,23 @@ def create_boat():
         error = e.orig.args[1]
         print(error)
         return render_template('boats_create.html', error=error, success=None)
+    
+@app.route('/update', methods=['GET'])
+def update_get_request():
+    return render_template('boats_update.html')
 
+@app.route('/update', methods=['POST'])
+def update_boat():
+    try:
+        conn.execute(
+            text("UPDATE boats SET name = :name, type = :type, owner_id = :owner_id, rental_price = :rental_price WHERE id = :id"),
+            request.form
+        )
+        return render_template('boats_update.html', error=None, success="Data updated successfully!")
+    except Exception as e:
+        error = e.orig.args[1]
+        print(error)
+        return render_template('boats_update.html', error=error, success=None)
 
 @app.route('/delete', methods=['GET'])
 def delete_get_request():

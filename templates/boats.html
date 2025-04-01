@@ -18,6 +18,37 @@
         background-repeat: no-repeat;
         background-attachment: fixed;
     }
+    .search_form {
+        flex-direction: column;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px auto;
+    }
+    .input_field {
+        width: 300px;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    .input_submit {
+        width: 80%;
+        background-color: #6f4caf; /* Purple */
+        color: white;
+        padding: 7px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        letter-spacing: 3px;
+      }
+  
+    .input_submit:hover {
+        background-color: #9576b8; /* Lighter Purple */
+    }
     .boat {
         text-decoration: none;
         color: #753348; /* Dark beige */
@@ -55,7 +86,7 @@
     }
     .pagination_button {
         font-size: 20px;
-        background-color: #4CAF50; /* Green */
+        background-color:#6f4caf; /* Purple */
         border: none;
         color: white;
         padding: 2px 2px 4px;
@@ -80,7 +111,7 @@
     {% set prev_page = page - 1 %}  <!-- variables in jinja -->
     <div class="column">
         <h3>Page {{ page }}</h3>
-        <form action="/boats/1" method="POST" onsubmit="return validateForm()">
+        <form action="/boats/1" method="POST" onsubmit="return validateForm()" class="search_form">
             <script>
                 function validateForm() {
                     var search = document.forms[0]["search"].value;
@@ -97,7 +128,7 @@
             {% for boat in boats%}
                 <a class="boat" href="/boat/{{ boat['id'] }}">
                     <!-- Boat image placeholder, replace with actual image URL if available -->
-                    <img src="{{ url_for('static', filename='images/boat.png') }}" alt="Boat Image">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Boat Image" style="opacity: 0.5;">
                     <h3>Boat: {{ boat['name'] }}</h3>
                     <ul>
                         <li>Boat id: {{ boat['id'] }}</li>
