@@ -1,0 +1,88 @@
+<style>
+    .flex-box {
+        display: flex;
+        font-size: 16px;
+        flex-wrap: wrap;
+        width: 1140px;
+        margin: auto;
+        justify-content: space-around;
+        align-items: center;
+        background-image: radial-gradient(circle, rgba(43, 3, 13, 0.79) 0%, rgba(255, 255, 255, 0) 60%);
+        background-size: cover;
+    }
+    .column{
+        background-color: rgb(255, 255, 255); /* Light beige */
+        background-image: url("../static/images/waves.png");
+        background-size: cover;
+        background-position: 0 300px;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+    .boat {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        text-align: center;
+        font-size: 26px;
+        text-decoration: none;
+        color: #753348; /* Dark beige */
+        font-family: 'Courier New', Courier, monospace;
+        min-height: 70vh;
+        min-width: 500px;
+        padding: 10px;
+        background-color:rgb(241, 237, 222); /* Light beige */
+        border: 2px solid #ab3387; /* Wine */
+        border-radius: 10px;
+        margin: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .boat img {
+        width: 100%;
+        height: 200px;
+        border-radius: 10px;
+        object-fit: cover;
+    }
+    .boat h1 {
+        font-size: 36px;
+        font-family: 'Major Mono Display', monospace;
+        margin: 10px 0;
+    }
+    .boat ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .column {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        padding-top: 20px;
+        align-items: center;
+    }
+</style>
+
+{% extends "base.html" %}
+{% block body %}
+    <div class="column">
+        <div class="flex-box">
+                <a class="boat" href="/boat/{{ boat['id'] }}">
+                    <!-- Boat image placeholder, replace with actual image URL if available -->
+                    <img src="{{ url_for('static', filename='images/boat.png') }}" alt="Boat Image">
+                    <h1>Boat: {{ boat['name'] }}</h1>
+                    <ul>
+                        <li>Boat id: <b>{{ boat['id'] }}</b></li>
+                        <ul>
+                            <li>Name: <b>{{ boat['name'] }}</b></li>
+                            <li>Type: <b>{{ boat['type'] }}</b></li>
+                            <li>Owner ID: <b>{{ boat['owner_id'] }}</b></li>
+                            <li>Price: <b>{{ boat['rental_price'] }}</b></li>
+                        </ul>
+                    </ul>
+                </a>
+        </div>
+    </div>
+
+{% endblock %}

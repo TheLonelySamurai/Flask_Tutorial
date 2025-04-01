@@ -28,15 +28,34 @@ def user(name):
 @app.route('/boats/<page>', methods=['POST'])
 def get_boats(page=1):
     page = int(page)  # request params always come as strings. So type conversion is necessary.
-    per_page = 10  # records to show per page
+    per_page = 12  # records to show per page
+    if page == 0:
+        page = 1
     search = request.form.get('search', None)  # get the search value from the form
     if search:
         boats = conn.execute(text(f"SELECT * FROM boats WHERE name LIKE '%{search}%' LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
     else:
         boats = conn.execute(text(f"SELECT * FROM boats LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
     print(boats)
-    return render_template('boats.html', boats=boats, page=page, per_page=per_page)
-
+    return render_template('boats.html', boats=boats, page=page, per_page=per_page, search=search)
+@app.route('/boats/<page>/<search>')
+def get_boats_search_with_page(page=1, search=None):
+    page = int(page)  # request params always come as strings. So type conversion is necessary.
+    if page == 0:
+        page = 1
+    if search == 'MihAKpC5ZaIMXK+APl4CfQ==':
+        search = None
+    per_page = 12  # records to show per page
+    if search:
+        boats = conn.execute(text(f"SELECT * FROM boats WHERE name LIKE '%{search}%' LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
+    else:
+        boats = conn.execute(text(f"SELECT * FROM boats LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
+    print(boats)
+    return render_template('boats.html', boats=boats, page=page, per_page=per_page, search=search)
+@app.route('/boat/<id>', methods=['GET'])
+def get_boat(id):
+    boat = conn.execute(text("SELECT * FROM boats WHERE id = :id"), {'id': id}).first()
+    return render_template('boat.html', boat=boat)
 
 @app.route('/create', methods=['GET'])
 def create_get_request():
