@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request
 from sqlalchemy import Column, Integer, String, Numeric, create_engine, text
-
+from password import hash_password, decrypt_password
 app = Flask(__name__)
-conn_str = "mysql://root:74CLpyrola!@localhost/boatdb"
+# mysql://<username>:<password>@<host>/<database_name>
+conn_str = "mysql://root:74CLpyrola!@localhost/bankdb"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -10,48 +11,52 @@ conn = engine.connect()
 # render a file
 @app.route('/')
 def index():
-    return render_template('index.html')
+    users = conn.execute(text("SELECT * FROM Accounts ORDER BY AccountID")).all()
+    admins = conn.execute(text("SELECT * FROM Accounts")).all()
+    return render_template('index.html', users=users, admins=admins)
 
-# remember how to take user inputs?
-@app.route('/user/<name>')
-def user(name):
-    return render_template('user.html', name=name)
-
-
-# get all boats
-# this is done to handle requests for two routes -
-@app.route('/boats/')
-@app.route('/boats/<page>', methods=['POST'])
-def get_boats(page=1):
-    page = int(page)  # request params always come as strings. So type conversion is necessary.
-    per_page = 12  # records to show per page
-    if page == 0:
-        page = 1
-    search = request.form.get('search', None)  # get the search value from the form
-    if search:
-        boats = conn.execute(text(f"SELECT * FROM boats WHERE name LIKE '%{search}%' ORDER BY id LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
-    else:
-        boats = conn.execute(text(f"SELECT * FROM boats ORDER BY id LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
-    print(boats)
-    return render_template('boats.html', boats=boats, page=page, per_page=per_page, search=search)
-@app.route('/boats/<page>/<search>')
-def get_boats_search_with_page(page=1, search=None):
-    page = int(page)  # request params always come as strings. So type conversion is necessary.
-    if page == 0:
-        page = 1
-    if search == 'MihAKpC5ZaIMXK+APl4CfQ==':
-        search = None
-    per_page = 12  # records to show per page
-    if search:
-        boats = conn.execute(text(f"SELECT * FROM boats WHERE name LIKE '%{search}%' ORDER BY id LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
-    else:
-        boats = conn.execute(text(f"SELECT * FROM boats ORDER BY id LIMIT {per_page} OFFSET {(page - 1) * per_page}")).all()
-    print(boats)
-    return render_template('boats.html', boats=boats, page=page, per_page=per_page, search=search)
-@app.route('/boat/<id>', methods=['GET'])
-def get_boat(id):
-    boat = conn.execute(text("SELECT * FROM boats WHERE id = :id"), {'id': id}).first()
-    return render_template('boat.html', boat=boat)
+@app.route('/users')
+def get_users():
+    users = conn.execute(text(f"SELECT * FROM Accounts ORDER BY AccountID")).all()
+    print(users)
+    return render_template('users.html', users=users)
+@app.route('/profile', methods=['GET'])
+def get_profile_get_request():
+    
+    return render_template('logging.html', success=False)
+@app.route('/profile', methods=['POST'])
+def get_profile_from_login():
+    #logic for login
+    username = request.form['username']
+    password = request.form['password']
+    # Check if the username and password are correct
+    user = conn.execute(text("SELECT * FROM Accounts WHERE Username = :username"), {'username': username}).first()
+    if user:
+        # Check if the password matches the hashed password
+        if decrypt_password(user.Password_hash, password):
+            # Update the Login table to store the login information
+            conn.execute(
+                text("TRUNCATE TABLE Login")
+            )
+            conn.execute(
+                text("INSERT INTO Login (Username, Password_hash, AdminAccount) VALUES (:username, :password, False)"),
+                {'username': username, 'password': user.Password_hash}
+            )
+            # Password is correct, redirect to profile page
+            return render_template('logging.html', success=True, username=username)
+        else:
+            # Password is incorrect, show error message
+            return render_template('logging.html', success=False, username=username)
+    return render_template('logging.html', success=False)
+@app.route('/profile/<username>', methods=['GET'])
+def get_profile(username=None):
+    if id != None:
+        users = conn.execute(text("SELECT * FROM Accounts WHERE Username = :username"), {'username': username}).first()
+        return render_template('profile.html', users=users, failure=False)
+    else: 
+        users = conn.execute(text(f"SELECT * FROM Accounts ORDER BY AccountID")).all()
+        print(users)
+        return render_template('index.html', users=users, failure=True)
 
 @app.route('/create', methods=['GET'])
 def create_get_request():

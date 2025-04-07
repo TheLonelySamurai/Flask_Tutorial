@@ -28,8 +28,7 @@ header .topLeft li {
   padding: 5px 5px;
   font-size: 14px;
   color: white;
-  background: rgb(220,0,204);
-  background: linear-gradient(90deg, rgba(220, 0, 205, 0.345) 0%, rgba(0,212,255,1) 100%);
+  background: rgb(120, 78, 117);
   &:hover{
     cursor:pointer;
     scale:1.05;
@@ -38,7 +37,7 @@ header .topLeft li {
 }
 
 .topBar{
-  background-image:linear-gradient(rgb(116, 177, 177) 0%,#D6D6FF 40%,#3f48cc 55%);
+  background-color: #ab3387;
   display:flex;
   justify-content: space-between;
   align-items:center;

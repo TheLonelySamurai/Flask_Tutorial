@@ -1,0 +1,48 @@
+
+{% extends "base.html" %}
+{% block body %}
+    <style>
+        body{
+            background-color: rgb(252, 249, 245); /* Light beige */
+        }
+        .body {
+            font-family: 'Courier New', Courier, monospace;
+            transition: background-color 0.5s ease;
+        }
+        h1 {
+            color: #ab3387; /* Wine */
+            text-align: center;
+            margin-top: 50px;
+        }
+        #result {
+            text-align: center;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
+    <div class="body">
+    <h1>Logging in...</h1>
+    {% if success %}
+        <p id="result">Login successful!</p>
+
+    {% else %}
+        <p id="result">Login failed. Please try again.</p>
+    {% endif %}
+    </div>
+    <script>
+        setTimeout(function() {
+            var result = document.getElementById("result");
+            if (result.innerText === "Login successful!") {
+                result.style.color = "green";
+                setTimeout(function() {
+                    window.location.href = "/profile/{{ username }}"; // Redirect to profile page
+                }, 2000); // Redirect after 2 seconds
+            } else {
+                result.style.color = "red";
+                setTimeout(function() {
+                    window.location.href = "/";
+                }, 2000); // Redirect after 2 seconds
+            }
+        }, 10); // Wait for 2 seconds before changing color
+    </script>
+{% endblock %}

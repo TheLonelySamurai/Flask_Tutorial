@@ -1,0 +1,11 @@
+Username,Password_hash,fname,lname,SSN,address,phone,balance
+jdoe123,$2y$10$e0MYzXyjpJS7Pd0RVvHwHeFx4iJZVD6CwZQzFdi8O5RQ9sK5tpOEW,John,Doe,123456789,123 Elm Street,555-123-4567,1000.50
+asmith456,$2y$10$abc123abc123abc123abc123abc123abc123abc123abc123abc12,Alice,Smith,987654321,456 Oak Avenue,555-987-6543,250.75
+bwayne,$2y$10$dcBATm4nBruceHashTextWayneCaveSecret, Bruce,Wayne,111223333,1007 Mountain Dr,555-000-0001,1000000000
+ckent88,$2y$10$LoisLaneClarkHashManOfSteelZzZz,Clark,Kent,222334444,344 Clinton St,555-111-2222,5000.00
+pparker,$2y$10$AuntMaySpideyHashSecretSwinger,Peter,Parker,333445555,20 Ingram Street,555-333-4444,125.25
+tswiftie13,$2y$10$TaylorHashSwiftieHash123,Taylor,Swift,444556666,13 Swift Blvd,555-123-1313,1300.13
+lskywalker,$2y$10$UseTheForceLukeHashFarmboy,Luke,Skywalker,555667777,Anchorhead,555-456-7890,999.99
+srogers,$2y$10$CapHashShieldHashAmerica,Steve,Rogers,666778888,Brooklyn NY,555-987-0000,1776.00
+mbolton99,$2y$10$PasswordHashMichaelBolton,Mike,Bolton,777889999,Initech Office 4B,555-321-7654,0.01
+eexample,$2y$10$ExamplePasswordHashUser,Emily,Example,888990000,999 Sample Rd,555-999-9999,42.42

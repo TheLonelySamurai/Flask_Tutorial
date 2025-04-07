@@ -1,0 +1,50 @@
+<style>
+    .flex-box {
+        display: flex;
+        flex-direction:column;
+        font-size: 16px;
+        flex-wrap: wrap;
+        width: 1140px;
+        margin: auto;
+        justify-content: flex-start;
+        align-items: flex-start;
+        background-size: cover;
+    }
+    .flex-box h1 {
+        display: inline-block;
+        width: 100px;
+    }
+    .flex-box p{
+        display: inline-block;
+        width: 150px;
+    }
+    .column{
+        background-color: rgb(255, 255, 255); /* Light beige */
+    }
+
+    .column {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        padding-top: 20px;
+        align-items: center;
+    }
+</style>
+
+{% extends "base.html" %}
+{% block body %}
+    <div class="column">
+        </form>
+        <div class="flex-box">
+                <div class="user">
+                    <h3>Username: {{ users['Username'] }}</h3>
+                        <p>Account id: {{ users['AccountID'] }}</p>
+                            <p>First Name: {{ users['fname'] }}</p>
+                            <p>Last Name: {{ users['lname'] }}</p>
+                            <p>Address: {{users['address'] }}</p>
+                            <p>Balance: {{ users['balance'] }}</p>
+                </div>
+        </div>
+    </div>
+{% endblock %}
