@@ -7,7 +7,7 @@
         }
         .body {
             font-family: 'Courier New', Courier, monospace;
-            transition: background-color 0.5s ease;
+            transition: background-color 1.5s ease;
         }
         h1 {
             color: #ab3387; /* Wine */
@@ -22,11 +22,14 @@
     </style>
     <div class="body">
     <h1>Logging in...</h1>
-    {% if success %}
+    {% if (success and approved) and (not admin) %}
         <p id="result">Login successful!</p>
-
+    {% elif success and admin%}
+        <p id="result">Admin access granted.</p>
+    {% elif not approved%}
+        <p id="result">Login failed. Account Not Approved.</p>
     {% else %}
-        <p id="result">Login failed. Please try again.</p>
+        <p id="result"> Login failed. Invalid credentials.</p>
     {% endif %}
     </div>
     <script>
@@ -34,10 +37,29 @@
             var result = document.getElementById("result");
             if (result.innerText === "Login successful!") {
                 result.style.color = "green";
+                var background = document.querySelector('.body');
+                background.style.backgroundColor = "rgb(144, 238, 144)"; // Light green
                 setTimeout(function() {
                     window.location.href = "/profile/{{ username }}"; // Redirect to profile page
                 }, 2000); // Redirect after 2 seconds
-            } else {
+            } 
+            else if (result.innerText === "Admin access granted.") {
+                result.style.color = "green";
+                var background = document.querySelector('.body');
+                background.style.backgroundColor = "rgb(144, 238, 144)"; // Light green
+                setTimeout(function() {
+                    window.location.href = "/admin"; // Redirect to admin page
+                }, 2000); // Redirect after 2 seconds
+            } 
+            else if (result.innerText === "Login failed. Account Not Approved.") {
+                result.style.color = "red";
+                var background = document.querySelector('.body');
+                background.style.backgroundColor = "rgb(255, 162, 159)"; // Light Red
+                setTimeout(function() {
+                    window.location.href = "/"; // Redirect to home page
+                }, 2000); // Redirect after 2 seconds
+            }
+            else {
                 result.style.color = "red";
                 setTimeout(function() {
                     window.location.href = "/";

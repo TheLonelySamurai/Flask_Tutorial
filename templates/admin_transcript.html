@@ -1,0 +1,58 @@
+<style>
+    .flex-box {
+        display: flex;
+        flex-direction:column;
+        font-size: 16px;
+        flex-wrap: wrap;
+        width: 1140px;
+        margin: auto;
+        justify-content: flex-start;
+        align-items: flex-start;
+        background-size: cover;
+    }
+    .flex-box h1 {
+        display: inline-block;
+        width: 100px;
+    }
+    .flex-box p{
+        display: inline-block;
+        width: 150px;
+    }
+    .column{
+        background-color: rgb(255, 255, 255); /* Light beige */
+    }
+
+    .column {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        padding-top: 20px;
+        align-items: center;
+    }
+</style>
+
+{% extends "base.html" %}
+{% block body %}
+    <div class="column">
+        </form>
+        <div class="flex-box">
+            {% for action in transcript %}
+                <div class="action">
+                    <h3>ActionID: {{ action['actionID'] }}</h3>
+                    <h4>Admin Username: {{ action['AdminUsername'] }}</h4>
+                        <p>Account id: {{ action['accountID'] }}</p>
+                            <p>Date Of Action: {{ action['actionDate'] }}</p>
+                            <p>Value Changed: {{ action['rowChange'] }}</p>
+                            <p>PreviousValue: {{action['previousValue'] }}</p>
+                            <p>New Value: {{ action['newValue'] }}</p>
+                </div>
+            {% endfor %}
+            {%if transcript|length == 0%}
+                <div class="action">
+                    <h3>No Actions Found</h3>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

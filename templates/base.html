@@ -14,8 +14,7 @@
       <div class="topBar">
         <div class="topLeft">
           <ul class="barItem">
-            <li><a href="/">HOME</a></li>
-            <li><a href="/users">USERS</a></li>
+            <li><a href="/" id="HOME">HOME</a></li>
           </ul>
         </div>
       </div>
@@ -113,6 +112,45 @@
           </div>
         </div>
       </div>
+    {%if login%}
+      <h1 id="login" style="display: none; ">{{ login.Username }}</h1>
+      {% for admin in admins%}
+        <h1 class="hiddenAdminBasePage" style="display: none; ">{{ admin.Username }}</h1>
+      {% endfor %}
+    {% else %}
+      <h1 id="login" style="display: none; "></h1>
+      {% for admin in admins%}
+        <h1 class="hiddenAdminBasePage" style="display: none; "></h1>
+      {% endfor %}
+    {% endif %}
     </footer>
+  <script>
+    //Check if any user is currently logged in and change the header accordingly
+    var login = document.getElementById('login').innerText;
+    if (login !== "") {
+        var header = document.querySelector('.barItem');
+        document.getElementById('HOME').innerText = "LOGOUT"; // Hide the original list
+        var newProfileOption = document.createElement('li');
+        newProfileOption.innerHTML = '<a href="/profile/' + login + '">PROFILE</a>';
+        var admins = document.getElementsByClassName('hiddenAdminBasePage');
+        for (var i = 0; i < admins.length; i++) {
+            if (login === admins[i].innerText) {
+                var newElement = document.createElement('li');
+                newElement.innerHTML = '<a href="/admin">ADMIN</a>';
+                header.appendChild(newElement);
+                newProfileOption.innerHTML = '<a href="/admin/transcript">TRANSCRIPT</a>';
+                break; // Exit the loop once the admin link is added
+            }
+        }
+        header.appendChild(newProfileOption);
+        var makeAPayment = document.createElement('li');
+        makeAPayment.innerHTML = '<a href="/payment">MAKE A PAYMENT</a>';
+        header.appendChild(makeAPayment);
+        var viewTransactions = document.createElement('li');
+        viewTransactions.innerHTML = '<a href="/transactions">VIEW TRANSACTIONS</a>';
+        header.appendChild(viewTransactions);
+    }
+  </script>
   </body>
+
 </html>

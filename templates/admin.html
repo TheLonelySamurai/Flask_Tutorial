@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block body %}
+    <style>
+        .title{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 80vh;
+            color: #753348;
+            margin: 50px;
+            border-radius: 50px;
+            font-family: 'Courier New', Courier, monospace;
+            background-color:rgb(252, 249, 245); /* Light beige */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 2px solid #ab3387; /* Wine */
+        }
+        .title h1{
+            font-size: 50px;
+            font-family: 'Ubuntu', monospace;
+            color: #ab3387; /* Wine */
+            text-transform: uppercase;
+            text-align: center;
+            lettering-spacing: 4px;
+        }
+        .content{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            padding: 100px 0;
+            color: #753348;
+            width: 100%;
+            font-family: 'Courier New', Courier, monospace;
+            background-color:rgb(252, 249, 245); /* Light beige */
+            border-top: 2px solid #ab3387; /* Wine */
+        }
+        .flex-box {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            width: 1440px;
+            margin: auto;
+        }
+        .user{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 300px;
+            height: 400px;
+            margin: 20px;
+            padding: 20px;
+            background-color: rgb(255, 255, 255); /* Light beige */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 2px solid #ab3387; /* Wine */
+        }
+        .user p{
+            display: inline-block;
+        }
+        .hiddenUsername{
+            display: none;
+        }
+        .hiddenAdmin{
+            display: none;
+        }
+    </style>
+    <p class="hiddenUsername">{{ login.Username }}</p>
+    {% for admin in admins %}
+        <p class="hiddenAdmin">{{ admin['Username'] }}</p>
+    {% endfor %}
+    <div class="title">
+        <h3> Welcome </h3>
+
+        <h1> Administrator </h1>
+      </form>
+    </div>
+    <div class="content">
+        <h1> Users </h1>
+        <div class="flex-box">
+            {% for user in users%}
+                <div class="user">
+                    <h3>Username: {{ user['Username'] }}</h3>
+                    <form action="/admin" method="POST">
+                        <input type="hidden" name="username" value="{{ user['Username'] }}">
+                        <input type="hidden" name="id" value="{{ user['AccountID'] }}">
+                        <input type="hidden" name="fname" value="{{ user['fname'] }}">
+                        <input type="hidden" name="lname" value="{{ user['lname'] }}">
+                        <input type="hidden" name="address" value="{{ user['address'] }}">
+                        <input type="hidden" name="balance" value="{{ user['balance'] }}">
+                        <input type="hidden" name="admin" value="{{ user['admin'] }}">
+                        <select id="approved" name="approved" onchange="this.form.submit()">
+                            <option value="0" {% if user['approved'] == 0 %}selected{% endif %}>Not Approved</option>
+                            <option value="1" {% if user['approved'] == 1 %}selected{% endif %}>Approved</option>
+                        </select>
+                    </form>
+                        <p>Account id: {{ user['AccountID'] }}</p>
+                            <p><b>First Name:</b> {{ user['fname'] }}</p>
+                            <p><b>Last Name:</b> {{ user['lname'] }}</p>
+                            <p><b>SSN:</b> {{ user['SSN'] }}</p>
+                            <p><b>Phone:</b> {{ user['phone'] }}</p>
+                            <p><b>Address:</b> {{user['address'] }}</p>
+                            <h4><b>Balance:</b> {{ user['balance'] }}</h4>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        // Check if the username is equal to the admin username
+        var username = document.querySelector('.hiddenUsername').innerText;
+        var admins = document.getElementsByClassName('hiddenAdmin');
+        isAdmin = false;
+        // Loop through the admin usernames
+        for (var i = 0; i < admins.length; i++) {
+            if (username === admins[i].innerText) {
+                // If the username is equal to the admin username, redirect to the admin page
+                isAdmin = true;
+                break;
+            }
+        }
+        if (!isAdmin) {
+            // If the username is not equal to the admin username, redirect to the home page
+            document.querySelector('.content').innerHTML = "<h1> You are not authorized to view this page </h1>";
+            setTimeout(function() {
+                window.location.href = "/profile/" + username; // Redirect to profile page
+            }, 2000000); // Redirect after 2 seconds
+        }
+    </script>
+{% endblock %}

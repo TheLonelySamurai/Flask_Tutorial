@@ -23,6 +23,16 @@ create table if not exists Admins (
     lname varchar(40) not null,
     CONSTRAINT AdminPK primary key (Username, Password_hash)
 );
+create table if not exists AdminTranscript (
+	actionID int unique not null auto_increment,
+    AdminUsername varchar(24) not null,
+    actionDate datetime not null,
+    accountID int not null,
+    rowChange varchar(255) not null,
+    previousValue varchar(255) not null,
+    newValue varchar(255) not null,
+    PRIMARY KEY (actionID)
+);
 create table if not exists Transactions (
 	TransactionID int unique not null primary key auto_increment,
     trans_date date,

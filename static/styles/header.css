@@ -90,11 +90,7 @@ body {
   min-height: 100vh;
 }
 footer {
-  background-image: url( '../images/waves.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  border-top: 3px solid #ffdcf5;
+  background-color: #ab3387;
 }
 .footer {
   margin: 20px;
