@@ -134,22 +134,26 @@
         var newProfileOption = document.createElement('li');
         newProfileOption.innerHTML = '<a href="/profile/' + login + '">PROFILE</a>';
         var admins = document.getElementsByClassName('hiddenAdminBasePage');
+        isAdmin = false; // Initialize isAdmin variable
         for (var i = 0; i < admins.length; i++) {
             if (login === admins[i].innerText) {
                 var newElement = document.createElement('li');
                 newElement.innerHTML = '<a href="/admin">ADMIN</a>';
                 header.appendChild(newElement);
                 newProfileOption.innerHTML = '<a href="/admin/transcript">TRANSCRIPT</a>';
+                isAdmin = true; // Set isAdmin to true if the user is an admin
                 break; // Exit the loop once the admin link is added
             }
         }
-        header.appendChild(newProfileOption);
-        var makeAPayment = document.createElement('li');
-        makeAPayment.innerHTML = '<a href="/transfer">MAKE A PAYMENT</a>';
-        header.appendChild(makeAPayment);
-        var makeADeposit = document.createElement('li');
-        makeADeposit.innerHTML = '<a href="/deosit">MAKE A DEPOSIT</a>';
-        header.appendChild(makeADeposit);
+        if (!isAdmin) {
+          header.appendChild(newProfileOption);
+          var makeAPayment = document.createElement('li');
+          makeAPayment.innerHTML = '<a href="/transfer">MAKE A PAYMENT</a>';
+          header.appendChild(makeAPayment);
+          var makeADeposit = document.createElement('li');
+          makeADeposit.innerHTML = '<a href="/deposit">MAKE A DEPOSIT</a>';
+          header.appendChild(makeADeposit);
+        }
         var viewTransactions = document.createElement('li');
         viewTransactions.innerHTML = '<a href="/transactions">VIEW TRANSACTIONS</a>';
         header.appendChild(viewTransactions);

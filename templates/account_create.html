@@ -1,0 +1,76 @@
+<style>
+    .body{
+        margin: 10%;
+        border-radius: 10px;
+        background-color: rgb(255, 255, 255); /* Light beige */
+        border: 2px solid #ab3387; /* Wine */
+        padding: 20px;
+    }
+    .input_field {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .input_submit {
+      width: 100%;
+      background-color: #6f4caf; /* Purple */
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .input_submit:hover {
+      background-color: #9576b8; /* Lighter Purple */
+    }
+</style>
+
+{% extends "base.html" %}
+{% block body %}
+    <div class="body">
+        {% if error %}
+            <h2>{{ error }}</h2>
+        {% endif %}
+
+        {% if success %}
+            <h2 id="success">{{ success }}</h2>
+        {% else %}
+        <h2> Create a New Account! </h2>
+        <h3> Fill in the details below: </h3>
+        <form action="/account_create" method="POST">
+            <input type="text" name="username" placeholder="Enter a Username" class="input_field"> <br>
+            <input type="text" name="password" placeholder="Enter a Password" class="input_field"> <br>
+            <input type="text" name="fname" placeholder="First Name" class="input_field"> <br>
+            <input type="text" name="lname" placeholder="Last Name" class="input_field"> <br>
+            <input type="number" name="ssn" placeholder="SSN" class="input_field"> <br>
+            <input type="text" name="address" placeholder="Home Address" class="input_field"> <br>
+            <input type="text" name="phone" placeholder="Phone Number" class="input_field"> <br>
+            <input type="submit" value="Submit" class="input_submit" onclick="validateForm()">
+            <script>
+                function validateForm() {
+                    var id = document.querySelector('input[name="username"]').value;
+                    if (id === "") {
+                        alert("Please enter a username.");
+                        event.preventDefault(); // Prevent form submission
+                        return false;
+                    } 
+                }
+                // Check if success is true and redirect to the home page
+                var success = document.querySelector('#success');
+                if (success == "Account Created!") {
+                    setTimeout(function() {
+                        window.location.href = "/"; // Redirect to home page
+                    }, 2000); // Redirect after 2 seconds
+                }
+            </script>
+        </form>
+        {% endif %}
+    </div>
+{% endblock %}

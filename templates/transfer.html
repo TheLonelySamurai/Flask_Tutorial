@@ -47,10 +47,6 @@
             <h4> Fill in the ID of the account you want to transfer to: </h4>
             <input type="number" name="id" placeholder="ID" class="input_field"> <br>
             <input type="hidden" name="username" value="{{ login.Username }}">
-            <h5>Fill in card information</h5>
-            <input type="text" name="card_number" placeholder="Card Number" class="input_field"> <br>
-            <input type="text" name="card_expiry" placeholder="MM/YY" class="input_field"> <br>
-            <input type="text" name="card_cvc" placeholder="CVC" class="input_field"> <br>
             <h4> Fill in the transaction amount: </h4>
             <input type="number" name="amount" placeholder="Amount" class="input_field"> <br>
             <input type="submit" value="Submit" class="input_submit" onclick="validateForm()">
