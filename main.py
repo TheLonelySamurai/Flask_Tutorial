@@ -74,7 +74,7 @@ def get_profile_from_login():
 def get_profile(username=None):
     login = conn.execute(text("SELECT * FROM Login")).first()
     admins = conn.execute(text("SELECT * FROM Admins")).all()
-    if id != None:
+    if username is not None:
         users = conn.execute(text("SELECT * FROM Accounts WHERE Username = :username"), {'username': username}).first()
         return render_template('profile.html', users=users, failure=False, login=login)
     else: 
@@ -157,27 +157,85 @@ def create_boat():
         print(error)
         return render_template('boats_create.html', error=error, success=None)
     
-@app.route('/update', methods=['GET'])
-def update_get_request():
-    return render_template('boats_update.html')
+@app.route('/transfer', methods=['GET'])
+def transfer_get_request():
+    login = conn.execute(text("SELECT * FROM Login")).first()
+    admins = conn.execute(text("SELECT * FROM Admins")).all()
+    return render_template('transfer.html', login=login, admins=admins, error=None, success=None)
 
-@app.route('/update', methods=['POST'])
-def update_boat():
+@app.route('/transfer', methods=['POST'])
+def transfer_amount():
+    login = conn.execute(text("SELECT * FROM Login")).first()
+    admins = conn.execute(text("SELECT * FROM Admins")).all()
+    print(login.Username)
     try:
         conn.execute(
-            text("UPDATE boats SET name = :name, type = :type, owner_id = :owner_id, rental_price = :rental_price WHERE id = :id"),
+            text("UPDATE Accounts SET balance = balance + :amount WHERE AccountID = :id"),
             request.form
         )
-        return render_template('boats_update.html', error=None, success="Data updated successfully!")
+        currentUser = conn.execute(
+            text("SELECT * FROM Accounts WHERE Username = :user"),
+            {'user': login.Username}).first()
+        conn.execute(
+            text("UPDATE Accounts SET balance = balance - :amount WHERE AccountID = :id"),
+            {'id': currentUser.AccountID, 'amount': request.form['amount']}
+        )
+        # Save the transaction in the transactions table
+        conn.execute(text("INSERT INTO Transactions (trans_date, fromID, toID, amount) VALUES (NOW(), :from_id, :to_id, :amount)"),
+            {
+                'from_id': currentUser.AccountID,
+                'to_id': request.form['id'],
+                'amount': request.form['amount']
+            }
+        )
+        return render_template('transfer.html', login=login, admins=admins, error=None, success="Data updated successfully!")
     except Exception as e:
-        error = e.orig.args[1]
-        print(error)
-        return render_template('boats_update.html', error=error, success=None)
+        error = e
+        print(error, login)
+        return render_template('transfer.html', error=error, success=None, login=login, admins=admins)
 
-@app.route('/delete', methods=['GET'])
+@app.route('/deposit', methods=['GET'])
+def deposit_get_request():
+    login = conn.execute(text("SELECT * FROM Login")).first()
+    admins = conn.execute(text("SELECT * FROM Admins")).all()
+    return render_template('deposit.html', login=login, admins=admins, error=None, success=None)
+
+@app.route('/deposit', methods=['POST'])
+def deposit_amount():
+    login = conn.execute(text("SELECT * FROM Login")).first()
+    admins = conn.execute(text("SELECT * FROM Admins")).all()
+    print(login.Username)
+    try:
+        currentUser = conn.execute(
+            text("SELECT * FROM Accounts WHERE Username = :user"),
+            {'user': login.Username}).first()
+        conn.execute(
+            text("UPDATE Accounts SET balance = balance + :amount WHERE AccountID = :id"),
+            {'id': currentUser.AccountID, 'amount': request.form['amount']}
+        )
+        return render_template('deposit.html', login=login, admins=admins, error=None, success="Data updated successfully!")
+    except Exception as e:
+        error = e
+        print(error, login)
+        return render_template('deposit.html', error=error, success=None, login=login, admins=admins)
+
+
+@app.route('/transactions', methods=['GET'])
 def delete_get_request():
-    return render_template('boats_delete.html')
-
+    login = conn.execute(text("SELECT * FROM Login")).first()
+    admins = conn.execute(text("SELECT * FROM Admins")).all()
+    if login.Username == None:
+        return render_template('logging.html', success=False, login=login, admins=admins)
+    adminUsernames = conn.execute(text("SELECT Username FROM Admins")).all()
+    if login.Username in adminUsernames:
+        transactions = conn.execute(text("SELECT * FROM Transactions")).all()
+    else:
+        user = conn.execute(text("SELECT * FROM Accounts WHERE Username = :username"), {'username': login.Username}).first()
+        transactions = conn.execute(
+            text("SELECT * FROM Transactions WHERE fromID = :from_id"),
+            {'from_id': user.AccountID}
+            ).all()
+    return render_template('transactions.html', transactions=transactions, login=login, admins=admins)
 
 @app.route('/delete', methods=['POST'])
 def delete_boat():

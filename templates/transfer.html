@@ -1,0 +1,98 @@
+<style>
+    .body{
+        margin: 10%;
+        border-radius: 10px;
+        background-color: rgb(255, 255, 255); /* Light beige */
+        border: 2px solid #ab3387; /* Wine */
+        padding: 20px;
+    }
+    .input_field {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .input_submit {
+      width: 100%;
+      background-color: #6f4caf; /* Purple */
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .input_submit:hover {
+      background-color: #9576b8; /* Lighter Purple */
+    }
+</style>
+
+{% extends "base.html" %}
+{% block body %}
+    <div class="body">
+        {% if error %}
+            <h2>{{ error }}</h2>
+        {% endif %}
+
+        {% if success %}
+            <h2 class="success-message">{{ success }}</h2>
+        {% else %}
+        <h2>  </h2>
+        <form action="/transfer" method="POST">
+            <h4> Fill in the ID of the account you want to transfer to: </h4>
+            <input type="number" name="id" placeholder="ID" class="input_field"> <br>
+            <input type="hidden" name="username" value="{{ login.Username }}">
+            <h5>Fill in card information</h5>
+            <input type="text" name="card_number" placeholder="Card Number" class="input_field"> <br>
+            <input type="text" name="card_expiry" placeholder="MM/YY" class="input_field"> <br>
+            <input type="text" name="card_cvc" placeholder="CVC" class="input_field"> <br>
+            <h4> Fill in the transaction amount: </h4>
+            <input type="number" name="amount" placeholder="Amount" class="input_field"> <br>
+            <input type="submit" value="Submit" class="input_submit" onclick="validateForm()">
+        </form>
+        {% endif %}
+        <script>
+            // kick user out if on this page and not logged in
+            var login = document.getElementById('login').innerText;
+            if (login === "") {
+                window.location.href = "/"; // Redirect to the home page
+            }
+            // Check if the user is an admin and redirect to the admin page
+            var admins = document.getElementsByClassName('hiddenAdminBasePage');
+            for (var i = 0; i < admins.length; i++) {
+                if (login === admins[i].innerText) {
+                    window.location.href = "/admin"; // Redirect to the admin page
+                    break; // Exit the loop once the admin link is added
+                }
+            }
+            // Validate the form before submission
+            function validateForm() {
+                var id = document.querySelector('input[name="id"]').value;
+                if (id === "") {
+                    alert("Please enter an account ID.");
+                    event.preventDefault(); // Prevent form submission
+                    return false;
+                } 
+                //prevent negative numbers and 0
+                var amount = document.querySelector('input[name="amount"]').value;
+                if (amount <= 0) {
+                    alert("Please enter a valid amount greater than 0.");
+                    event.preventDefault(); // Prevent form submission
+                    return false;
+                }
+            }
+            setTimeout(function() {
+                var successMessage = document.querySelector('.success-message');
+                login = document.getElementById('login').innerText;
+                if (successMessage) {
+                    window.location.href("/profile/" + login); // Redirect to account after 3 seconds
+                }
+            }, 3000);
+        </script>
+    </div>
+{% endblock %}

@@ -114,6 +114,7 @@
       </div>
     {%if login%}
       <h1 id="login" style="display: none; ">{{ login.Username }}</h1>
+     
       {% for admin in admins%}
         <h1 class="hiddenAdminBasePage" style="display: none; ">{{ admin.Username }}</h1>
       {% endfor %}
@@ -144,8 +145,11 @@
         }
         header.appendChild(newProfileOption);
         var makeAPayment = document.createElement('li');
-        makeAPayment.innerHTML = '<a href="/payment">MAKE A PAYMENT</a>';
+        makeAPayment.innerHTML = '<a href="/transfer">MAKE A PAYMENT</a>';
         header.appendChild(makeAPayment);
+        var makeADeposit = document.createElement('li');
+        makeADeposit.innerHTML = '<a href="/deosit">MAKE A DEPOSIT</a>';
+        header.appendChild(makeADeposit);
         var viewTransactions = document.createElement('li');
         viewTransactions.innerHTML = '<a href="/transactions">VIEW TRANSACTIONS</a>';
         header.appendChild(viewTransactions);
